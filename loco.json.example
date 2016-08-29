@@ -1,0 +1,5 @@
+{
+  "id": "<oauth_id>",
+  "secret": "<oauth_secret>",
+  "redirect_uri": "<redirect_uri>"
+}
