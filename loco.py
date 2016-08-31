@@ -5,16 +5,16 @@ import os
 import json 
 
 OAUTH_SETTINGS_FILENAME = 'loco.json'
-oauth_settings = json.load(open(OAUTH_SETTINGS_FILENAME))
+app_settings = json.load(open(OAUTH_SETTINGS_FILENAME))
 
 app = Flask(__name__)
 app.config['RC_API_URI'] = 'http://www.recurse.com/api/v1'
 app.config['RC_OAUTH_AUTH_URI'] = 'https://www.recurse.com/oauth/authorize'
 app.config['RC_OAUTH_TOKEN_URI'] = 'https://www.recurse.com/oauth/token'
-app.config['RC_OAUTH_CLIENT_ID'] = oauth_settings['client_id']
-app.config['RC_OAUTH_CLIENT_SECRET'] = oauth_settings['client_secret']
-app.config['RC_OAUTH_CLIENT_REDIRECT_URI'] = oauth_settings['redirect_uri']
-app.config['SESSION_SECRET'] = oauth_settings['session_secret']
+app.config['RC_OAUTH_CLIENT_ID'] = app_settings['client_id']
+app.config['RC_OAUTH_CLIENT_SECRET'] = app_settings['client_secret']
+app.config['RC_OAUTH_CLIENT_REDIRECT_URI'] = app_settings['redirect_uri']
+app.config['SESSION_SECRET'] = app_settings['session_secret']
 
 
 # DB Stuff
@@ -24,7 +24,7 @@ from geoalchemy2.types import Geometry
 
 
 # TODO: Read database credentials from file, env variables etc.
-app.config['SQLALCHEMY_DATABASE_URI'] = ''
+app.config['SQLALCHEMY_DATABASE_URI'] = app_settings["db_uri"]
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
