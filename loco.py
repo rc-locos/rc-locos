@@ -23,7 +23,8 @@ from sqlalchemy.ext.declarative import declarative_base
 from geoalchemy2.types import Geometry
 
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://dbperson:toor@localhost/rc-locos'
+# TODO: Read database credentials from file, env variables etc.
+app.config['SQLALCHEMY_DATABASE_URI'] = ''
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
