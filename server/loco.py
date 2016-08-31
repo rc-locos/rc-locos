@@ -32,7 +32,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = app_settings["db_uri"]
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
-  
+
 class RcLoco(db.Model):
     __tablename__ = 'locos'
     id = db.Column(db.BigInteger, primary_key=True)
@@ -40,6 +40,15 @@ class RcLoco(db.Model):
     address = db.Column(db.Text)
     coords = db.Column(Geometry(geometry_type='POINT', srid=4326))
     is_shared = db.Column(db.Boolean, default=False)
+
+
+class ModelSerializer(json.JSONEncoder):
+
+    OMITTED_KEYS = {'_sa_instance_state'}
+
+    def default(self, o):
+        return {k: v for k, v in o.__dict__.items()
+                if k not in self.OMITTED_KEYS}
 
 # App
 
@@ -57,14 +66,14 @@ def index():
         url_params = urllib.parse.urlencode(params)
         oauth_url = "%s?%s" % (app.config['RC_OAUTH_AUTH_URI'], url_params)
         return redirect(oauth_url)
-    
+
     # User already authenticated
     user = session['user']
     token = sessions[user]
-    
     # get user
     u = get_user(token)
-    return render_template('index.html', user=u)
+    locos = RcLoco.query.all()
+    return render_template('index.html', user=u, locos=locos)
 
 
 @app.route('/token', methods=['GET', 'POST'])
@@ -80,7 +89,7 @@ def access_token():
 
     req = requests.post(app.config['RC_OAUTH_TOKEN_URI'], data=params)
     data = json.loads(req.text)
-    if 'access_token' in data: 
+    if 'access_token' in data:
 
         token = data['access_token']
         user = get_user(token)
@@ -89,19 +98,32 @@ def access_token():
         user_email = user['email']
 
         session['user'] = user_email
-        sessions[user_email] = token 
+        sessions[user_email] = token
 
         return redirect(url_for('index'))
     else:
         abort(403, 'Go away!')
 
-    
+
 def make_header(access_token):
     headers = {
         'Authorization': 'Bearer %s' % access_token,
         'Accepts' : 'application/json'
     }
-    return headers 
+    return headers
+
+def serialize(method):
+    def serialized_response(*args, **kwargs):
+        response = method(*args, **kwargs)
+        return json.dumps(response, cls=ModelSerializer)
+    return serialized_response
+
+
+@app.route('/users', methods=['GET'])
+@serialize
+def get_users():
+    locos = RcLoco.query.all()
+    return locos
 
 # def get_batch(access_token, batch_id):
 #     headers = make_header(access_token)
@@ -112,7 +134,7 @@ def make_header(access_token):
 #     headers = make_header(access_token)
 #     req = requests.get("%s/batches" % app.config['RC_API_URI'], headers=headers)
 #     return json.loads(req.text)
-    
+
 
 def get_user(access_token):
     headers = make_header(access_token)
