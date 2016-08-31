@@ -112,7 +112,18 @@ def make_header(access_token):
 def get_user(access_token):
     headers = make_header(access_token)
     req = requests.get("%s/people/me" % app.config['RC_API_URI'], headers=headers)
-    return json.loads(req.text)
+
+    u = req.json()
+    # If user data is not saved in our db, save
+    loco = RcLoco.query.get(int(u['id']))
+    if not loco:
+        loco = RcLoco(
+            id=u['id'],
+            name=u['pseudonym']
+        )
+        db.session.add(loco)
+        db.session.commit()
+    return u
 
 if __name__ == '__main__':
     app.debug = True

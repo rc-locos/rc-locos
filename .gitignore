@@ -2,3 +2,4 @@ loco.json
 __pycache__/
 *~
 *#
+*.pyc
