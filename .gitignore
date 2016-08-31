@@ -1,1 +1,4 @@
 loco.json
+__pycache__/
+*~
+*#
