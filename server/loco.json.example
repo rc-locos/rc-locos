@@ -1,5 +1,7 @@
 {
-  "id": "<oauth_id>",
-  "secret": "<oauth_secret>",
-  "redirect_uri": "<redirect_uri>"
+    "client_id": "<oauth_id>",
+    "client_secret": "<oauth_secret>",
+    "redirect_uri": "<redirect_uri>",
+    "session_secret": "<session_secret>",
+    "db_uri": "<db_uri>"
 }

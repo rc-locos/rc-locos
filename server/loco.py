@@ -2,10 +2,14 @@ from flask import Flask, request, redirect, url_for, jsonify, session, render_te
 import requests
 import urllib.parse
 import os
-import json 
+import json
+import sys
 
-OAUTH_SETTINGS_FILENAME = 'loco.json'
-app_settings = json.load(open(OAUTH_SETTINGS_FILENAME))
+SETTINGS_FILENAME = 'loco.json'
+if not os.path.exists(SETTINGS_FILENAME):
+    print("Cannot find settings file `{}`".format(SETTINGS_FILENAME))
+    sys.exit(-1)
+app_settings = json.load(open(SETTINGS_FILENAME))
 
 app = Flask(__name__)
 app.config['RC_API_URI'] = 'http://www.recurse.com/api/v1'
