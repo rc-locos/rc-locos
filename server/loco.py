@@ -155,6 +155,8 @@ def get_user(access_token):
 
     u = req.json()
     # If user data is not saved in our db, save
+    if 'id' not in u:
+        abort(401)
     loco = RcLoco.query.get(int(u['id']))
     if not loco:
         loco = RcLoco(
