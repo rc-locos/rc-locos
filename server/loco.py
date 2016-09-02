@@ -1,4 +1,5 @@
 from flask import Flask, request, redirect, url_for, jsonify, session, render_template, abort
+from functools import wraps
 import requests
 import urllib.parse
 import os
@@ -8,7 +9,7 @@ import sys
 SETTINGS_FILENAME = 'loco.json'
 if not os.path.exists(SETTINGS_FILENAME):
     print("Cannot find settings file `{}`".format(SETTINGS_FILENAME))
-    sys.exit(-1)
+    sys.exit(1)
 app_settings = json.load(open(SETTINGS_FILENAME))
 
 app = Flask(__name__)
@@ -54,20 +55,27 @@ class ModelSerializer(json.JSONEncoder):
 
 sessions = {}
 
+
+def check_authentication(method):
+    @wraps(method)
+    def auth_checked(*args, **kwargs):
+        if 'user' not in session or session['user'] not in sessions:
+            params = {
+                "client_id": app.config['RC_OAUTH_CLIENT_ID'],
+                "redirect_uri": app.config['RC_OAUTH_CLIENT_REDIRECT_URI'],
+                "response_type": 'code'
+            }
+            url_params = urllib.parse.urlencode(params)
+            oauth_url = "%s?%s" % (app.config['RC_OAUTH_AUTH_URI'], url_params)
+            return redirect(oauth_url)
+        else:
+            # User already authenticated
+            return method(*args, **kwargs)
+    return auth_checked
+
 @app.route('/', methods=['GET'])
+@check_authentication
 def index():
-    if 'user' not in session or session['user'] not in sessions:
-        params = {
-            "client_id": app.config['RC_OAUTH_CLIENT_ID'],
-            "redirect_uri": app.config['RC_OAUTH_CLIENT_REDIRECT_URI'],
-            "response_type": 'code'
-        }
-
-        url_params = urllib.parse.urlencode(params)
-        oauth_url = "%s?%s" % (app.config['RC_OAUTH_AUTH_URI'], url_params)
-        return redirect(oauth_url)
-
-    # User already authenticated
     user = session['user']
     token = sessions[user]
     # get user
@@ -113,14 +121,19 @@ def make_header(access_token):
     return headers
 
 def serialize(method):
+    @wraps(method)
     def serialized_response(*args, **kwargs):
         response = method(*args, **kwargs)
+        if hasattr(response, 'content_type'):
+            # Don't attempt to serialize Werkzeug response wrappers
+            return response
         return json.dumps(response, cls=ModelSerializer)
     return serialized_response
 
 
 @app.route('/users', methods=['GET'])
 @serialize
+@check_authentication
 def get_users():
     locos = RcLoco.query.all()
     return locos
