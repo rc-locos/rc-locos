@@ -110,7 +110,7 @@ def access_token():
 
         return redirect(url_for('index'))
     else:
-        abort(403, 'Go away!')
+        abort(401, 'Go away!')
 
 
 def make_header(access_token):
