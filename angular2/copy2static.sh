@@ -3,6 +3,11 @@
 
 STATIC_DIR='../server/static'
 
+# Create static directories
+if [ ! -d "$STATIC_DIR" ]; then
+    mkdir -p $STATIC_DIR/{img,css,js}
+fi
+
 # Copy images
 cp dist/static/img/* $STATIC_DIR/img/
 
