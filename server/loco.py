@@ -135,7 +135,7 @@ def serialize(method):
 @serialize
 @check_authentication
 def get_users():
-    locos = RcLoco.query.all()
+    locos = RcLoco.query.filter_by(is_shared=True).all()
     return locos
 
 # def get_batch(access_token, batch_id):
