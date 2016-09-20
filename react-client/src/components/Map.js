@@ -6,6 +6,10 @@ class Map extends Component {
     return (
       <div className="map">
       This is where the map goes
+
+      <ul>
+      {this.props.locos.map(loco => <li>{loco.name}, {loco.coord}</li>)}
+      </ul>
       </div>
     );
   }

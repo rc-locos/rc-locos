@@ -9,8 +9,8 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-      <Map />
-      <Form />
+      <Map locos={this.props.locos} />
+      <Form onSubmit={() => alert("submitted")} />
       </div>
     );
   }

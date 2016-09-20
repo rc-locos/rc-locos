@@ -9,9 +9,24 @@ import reducer from './reducer';
 
 const store = createStore(reducer);
 
+const locos = [
+    {
+	coord: [0, 0],
+	name: "Zero"
+    },
+    {
+	coord: [1, 1],
+	name: "One"
+    },
+    {
+	coord: [2, 2],
+	name: "Two"
+    }
+]
+
 ReactDOM.render(
 	<Provider store={store}>
-	<App />
+	<App locos={locos} />
 	</Provider>,
     document.getElementById('root')
 );

@@ -5,8 +5,8 @@ class Form extends Component {
   render() {
     return (
       <div className="form">
-	    <input type="text" />
-	    <button>Submit</button>
+      <input type="text" />
+      <button type="Submit" onClick={() => this.props.onSubmit()} >Submit</button>
       </div>
     );
   }
