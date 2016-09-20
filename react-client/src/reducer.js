@@ -1,22 +1,22 @@
 import {Map} from 'immutable';
 
-function setState(state, newState) {
-    return state.merge(newState);
+
+const setState = (state, newState) => {
+  return state.merge(newState);
+}
+
+const submitAddr = (state, address) => {
+  console.log("submitting address: " + address);
+  return state;
 }
 
 export default (state = Map(), action) => {
-    switch (action.type) {
+  switch (action.type) {
     case 'SET_STATE':
-	return setState(state, action.state);
-    // case 'SET_CLIENT_ID':
-    // 	return state.set('clientId', action.clientId);
-    // case 'SET_CONNECTION_STATE':
-    // 	return setConnectionState(state, action.state, action.connected);
-    // case 'SET_STATE':
-    // 	return resetVote(setState(state, action.state));
-    // case 'VOTE':
-    // 	return vote(state, action.entry);
+      return setState(state, action.state);
+    case 'SUBMIT_ADDR':
+      return submitAddr(state, action.addr);
     default:
-	return state;
-    }
+      return state;
+  }
 }

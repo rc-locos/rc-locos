@@ -2,6 +2,8 @@ import React from 'react';
 import PureRenderMixin from 'react-addons-pure-render-mixin';
 import {connect} from 'react-redux';
 
+import * as actions from '../actions';
+
 
 export class LocoMap extends React.Component {
 
@@ -17,11 +19,11 @@ export class LocoMap extends React.Component {
   render() {
     return (
       <div className="map">
-      This is where the map goes
+	This is where the map goes
 
-      <ul>
-      {this.getLocos().map(loco => <li>{loco.name}, {loco.coord}</li>)}
-      </ul>
+	<ul>
+	  {this.getLocos().map(loco => <li key={loco.name}>{loco.name}, {loco.coord}</li>)}
+	</ul>
       </div>
     );
   }
@@ -35,4 +37,4 @@ const mapStateToProps = (state) => {
     locos: state.get('locos')
   };
 }
-export const LocoMapContainer = connect(mapStateToProps)(LocoMap);
+export const LocoMapContainer = connect(mapStateToProps, actions)(LocoMap);
