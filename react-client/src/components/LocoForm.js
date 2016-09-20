@@ -10,14 +10,22 @@ export class LocoForm extends React.Component {
   constructor(props) {
     super(props);
     this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
+    this.state = {addr: ''};
+  }
+
+  handleAddrChange(e) {
+    this.setState({addr: e.target.value});
+  }
+
+  handleSubmit() {
+    this.props.submitAddr(this.state.addr);
   }
   
   render() {
     return (
       <div className="form">
-	<input type="text" />
-	<button type="Submit"
-		onClick={() => this.props.submitAddr("helloblahblahblah")} >Submit</button>
+	<input type="text" onChange={this.handleAddrChange.bind(this)} />
+	<button type="button" onClick={this.handleSubmit.bind(this)} >Submit</button>
 	Sharing: {this.props.isSharing ? "true" : "false"}
       </div>
     );
