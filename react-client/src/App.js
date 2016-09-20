@@ -1,16 +1,16 @@
-import React, { Component } from 'react';
+import React from 'react';
+
 import './App.css';
+import {LocoForm} from './components/LocoForm';
+import {LocoMap} from './components/LocoMap';
 
-import Form from './components/Form';
-import Map from './components/Map';
 
-
-class App extends Component {
+class App extends React.Component {
   render() {
     return (
       <div className="App">
-      <Map locos={this.props.locos} />
-      <Form onSubmit={() => alert("submitted")} />
+      <LocoMap />
+      <LocoForm onSubmit={() => alert("submitted")} />
       </div>
     );
   }
