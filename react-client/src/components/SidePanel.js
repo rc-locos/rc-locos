@@ -5,7 +5,7 @@ import {connect} from 'react-redux';
 import * as actions from '../actions';
 
 
-export class LocoForm extends React.Component {
+export class SidePanel extends React.Component {
 
   constructor(props) {
     super(props);
@@ -23,9 +23,10 @@ export class LocoForm extends React.Component {
   
   render() {
     return (
-      <div className="form">
+      <div className="sidePanel">
 	<input type="text" onChange={this.handleAddrChange.bind(this)} />
 	<button type="button" onClick={this.handleSubmit.bind(this)} >Submit</button>
+	<br />
 	Sharing: {this.props.isSharing ? "true" : "false"}
       </div>
     );
@@ -40,4 +41,4 @@ const mapStateToProps = (state) => {
     isSharing: state.get('isSharing')
   };
 }
-export const LocoFormContainer = connect(mapStateToProps, actions)(LocoForm);
+export const SidePanelContainer = connect(mapStateToProps, actions)(SidePanel);

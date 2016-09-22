@@ -3,11 +3,11 @@
     background-color: yellow;
 }
 
-.map {
-    border: 1px solid blue;
-    height: 300px;
+.sidePanel {
+    float: left;
+    width: 250px;
 }
 
-.form {
-    border: 1px solid red;
+.mapContainer {
+    float: left;
 }

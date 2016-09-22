@@ -1,7 +1,7 @@
 import React from 'react';
 
 import './App.css';
-import {LocoFormContainer} from './components/LocoForm';
+import {SidePanelContainer} from './components/SidePanel';
 import {LocoMapContainer} from './components/LocoMap';
 
 
@@ -9,7 +9,7 @@ class App extends React.Component {
   render() {
     return (
       <div className="App">
-	<LocoFormContainer />
+	<SidePanelContainer />
 	<LocoMapContainer />
       </div>
     );

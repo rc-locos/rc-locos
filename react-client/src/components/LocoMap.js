@@ -30,7 +30,7 @@ export class LocoMap extends React.Component {
   
   render() {
     return (
-      <div className="map">
+      <div className="mapContainer">
 	
 	<Map google={window.google} onClick={this.onMapClicked.bind(this)}>
 	  <Marker onClick={this.onMarkerClick} name={'Current location'} />
