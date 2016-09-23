@@ -12,9 +12,11 @@ export class LocoMap extends React.Component {
     super(props);
     this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
     this.state = {
-      showingInfoWindow: true,
+      showingInfoWindow: false,
       activeMarker: {},
       selectedPlace: null,
+      newPos: {lat: 9999999, lng: 9999999},
+      /*       newPos: {lat: 40.7206499, lng: -74.0032909},*/
     };
   }
 
@@ -23,8 +25,11 @@ export class LocoMap extends React.Component {
   }
   
   // A point on the map is clicked
-  onMapClicked(mapProps, map, clickEvent) {
-    console.log(clickEvent.latLng.lat(), clickEvent.latLng.lng());
+  onMapClicked(mapProps, map, e) {
+    /*     React.unmountComponentAtNode(this.refs.newPos);*/
+    this.setState({newPos: {lat: e.latLng.lat(), lng: e.latLng.lng()}});
+    this.forceUpdate();
+    console.log(e.latLng.lat(), e.latLng.lng());
   }
 
   // Marker is clicked
@@ -33,6 +38,12 @@ export class LocoMap extends React.Component {
       selectedPlace: props,
       activeMarker: marker,
       showingInfoWindow: true
+    });
+  }
+
+  onInfoWindowClose() {
+    this.setState({
+      showingInfoWindow: false
     });
   }
   
@@ -50,7 +61,8 @@ export class LocoMap extends React.Component {
 		    onClick={this.onMarkerClick.bind(this)} />
 	   )}
 	<InfoWindow marker={this.state.activeMarker}
-		    visible={this.state.showingInfoWindow}>
+		    visible={this.state.showingInfoWindow}
+		    onClose={this.onInfoWindowClose.bind(this)}>
 	  <div>
 	    {this.state.selectedPlace?
 	     <div>
@@ -62,6 +74,9 @@ export class LocoMap extends React.Component {
 	  </div>
 	</InfoWindow>
 
+	{/* User's new position */}
+	<Marker key={"newPos"} ref={'newPos'} position={this.state.newPos} name={"New Position"} />
+	
 	</Map>
       </div>
     );
