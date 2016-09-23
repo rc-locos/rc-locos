@@ -18,17 +18,24 @@ import {Map} from 'immutable';
 const state0 =  Map({
   isSharing: false,
   locos: [
-    {
-      coord: [0, 0],
-      name: "Zero"
+    { name: "Recurse Center",
+      lat: 40.7206499,
+      lng: -74.0031909,
     },
     {
-      coord: [1, 1],
-      name: "One"
+      name: "User 1",
+      lat: 40.7589,
+      lng: -73.9851,
     },
     {
-      coord: [2, 2],
-      name: "Two"
+      name: "User 2",
+      lat: 40.6602,
+      lng: -73.9690,
+    },
+    {
+      name: "User 3",
+      lat: 40.7829,
+      lng: -73.9654,
     }
   ],
 });

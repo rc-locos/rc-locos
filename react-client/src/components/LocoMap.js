@@ -32,8 +32,15 @@ export class LocoMap extends React.Component {
     return (
       <div className="mapContainer">
 	
-	<Map google={window.google} onClick={this.onMapClicked.bind(this)}>
-	  <Marker onClick={this.onMarkerClick} name={'Current location'} />
+	<Map google={window.google}
+	     onClick={this.onMapClicked.bind(this)}
+	     initialCenter={{lat: 40.7206499, lng: -74.0031909}}>
+	  {this.getLocos().map(
+	     loco => <Marker key={loco.name}
+			     name={loco.name}
+			     position={{lat: loco.lat, lng: loco.lng}}
+			     onClick={this.onMarkerClick}  />
+	   )}
 	  <InfoWindow visible={this.state.showingInfoWindow} onClose={this.onInfoWindowClose}>
 	    <div>
 	      <h1>{/*this.state.selectedPlace.name*/}</h1>
@@ -41,10 +48,6 @@ export class LocoMap extends React.Component {
 	    </div>
 	  </InfoWindow>
 	</Map>
-	
-	<ul>
-	  {this.getLocos().map(loco => <li key={loco.name}>{loco.name}, {loco.coord}</li>)}
-	</ul>
       </div>
     );
   }
