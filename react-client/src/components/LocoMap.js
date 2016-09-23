@@ -11,42 +11,51 @@ export class LocoMap extends React.Component {
   constructor(props) {
     super(props);
     this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
-    this.state = {showingInfoWindow: false};
+    this.state = {
+      showingInfoWindow: true,
+      activeMarker: {},
+      selectedPlace: {},
+    };
   }
 
   getLocos() {
     return this.props.locos || [];
   }
-
+  
   // A point on the map is clicked
   onMapClicked(mapProps, map, clickEvent) {
     console.log(clickEvent.latLng.lat(), clickEvent.latLng.lng());
-    this.setState({showingInfoWindow: true});
   }
 
   // Marker is clicked
   onMarkerClick(props, marker, e) {
+    this.setState({
+      selectedPlace: props,
+      activeMarker: marker,
+      showingInfoWindow: true
+    });
   }
   
   render() {
     return (
       <div className="mapContainer">
-	
 	<Map google={window.google}
 	     onClick={this.onMapClicked.bind(this)}
-	     initialCenter={{lat: 40.7206499, lng: -74.0031909}}>
-	  {this.getLocos().map(
-	     loco => <Marker key={loco.name}
-			     name={loco.name}
-			     position={{lat: loco.lat, lng: loco.lng}}
-			     onClick={this.onMarkerClick}  />
+	     initialCenter={{lat: 40.720683, lng: -74.001001}}>
+	  {this.getLocos().map(loco =>
+	    <Marker key={loco.id}
+		    name={loco.name}
+		    position={{lat: loco.lat, lng: loco.lng}}
+		    onClick={this.onMarkerClick.bind(this)} />
 	   )}
-	  <InfoWindow visible={this.state.showingInfoWindow} onClose={this.onInfoWindowClose}>
-	    <div>
-	      <h1>{/*this.state.selectedPlace.name*/}</h1>
-	      <h1>Hello</h1>
-	    </div>
-	  </InfoWindow>
+	<InfoWindow marker={this.state.activeMarker}
+		    visible={this.state.showingInfoWindow}>
+	  <div>
+	    <h1>{this.state.selectedPlace.name}</h1>
+	    <h1>Hello</h1>
+	  </div>
+	</InfoWindow>
+
 	</Map>
       </div>
     );
