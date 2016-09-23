@@ -14,7 +14,7 @@ export class LocoMap extends React.Component {
     this.state = {
       showingInfoWindow: true,
       activeMarker: {},
-      selectedPlace: {},
+      selectedPlace: null,
     };
   }
 
@@ -44,6 +44,7 @@ export class LocoMap extends React.Component {
 	     initialCenter={{lat: 40.720683, lng: -74.001001}}>
 	  {this.getLocos().map(loco =>
 	    <Marker key={loco.id}
+		    loco={loco}
 		    name={loco.name}
 		    position={{lat: loco.lat, lng: loco.lng}}
 		    onClick={this.onMarkerClick.bind(this)} />
@@ -51,8 +52,13 @@ export class LocoMap extends React.Component {
 	<InfoWindow marker={this.state.activeMarker}
 		    visible={this.state.showingInfoWindow}>
 	  <div>
-	    <h1>{this.state.selectedPlace.name}</h1>
-	    <h1>Hello</h1>
+	    {this.state.selectedPlace?
+	     <div>
+	       <h1>{this.state.selectedPlace.name}</h1>
+	       {this.state.selectedPlace.loco.image?
+		<img src={this.state.selectedPlace.loco.image} alt="profile" />:''}
+	     </div>
+	     :null}
 	  </div>
 	</InfoWindow>
 

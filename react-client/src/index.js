@@ -19,7 +19,8 @@ const state0 =  Map({
   locos: [
     {
       id: 0,
-      name: "Recurse Center",
+      name: 'Recurse Center',
+      image: 'https://d29xw0ra2h4o4u.cloudfront.net/assets/people/joseph_kim_150-7b84865e873177a43530e684c3c56bacd96a936657409881c288c57eb0f79b0c.jpg',
       lat: 40.7206499,
       lng: -74.0031909,
     },
