@@ -27,20 +27,25 @@ export class LocoMap extends React.Component {
 
   // A point on the map is clicked
   onMapClicked(mapProps, map, e) {
-    //this.setState({newPos: {lat: e.latLng.lat(), lng: e.latLng.lng()}});
-
     // Clear out existing marker
     if (this.state.newMarker) {
       this.state.newMarker.setMap(null);
     }
-    
+
+    // Create new marker
     const latlng = new window.google.maps.LatLng(e.latLng.lat(), e.latLng.lng());
     const marker = new window.google.maps.Marker({
       map: map,
       position: latlng,
     });
-    this.setState({newMarker: marker});
-    /*     console.log(e.latLng.lat(), e.latLng.lng());*/
+    this.setState({
+      newMarker: marker,
+    });
+    // Create information window on the marker
+    const infowindow = new window.google.maps.InfoWindow({
+      content: "<div>Do you want to share this location with RC? <button>Yes</button><button>No</button></div>"
+    });
+    infowindow.open(map, marker);
   }
 
   // Marker is clicked
@@ -96,7 +101,6 @@ export class LocoMap extends React.Component {
 const LocoMapKey = GoogleApiWrapper({
   apiKey: 'AIzaSyApYKQNcnzFoSa4TP-l7PB4IoDm-pyT66w'
 })(LocoMap)
-
 
 // Set up redux-connected component
 const mapStateToProps = (state) => {
