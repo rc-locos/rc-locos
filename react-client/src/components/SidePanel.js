@@ -20,6 +20,10 @@ export class SidePanel extends React.Component {
   handleSubmit() {
     this.props.submitAddr(this.state.addr);
   }
+
+  /* addBatteryPark() {
+   *   
+   * }*/
   
   render() {
     return (

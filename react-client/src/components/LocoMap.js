@@ -15,7 +15,8 @@ export class LocoMap extends React.Component {
       showingInfoWindow: false,
       activeMarker: {},
       selectedPlace: null,
-      newPos: {lat: 9999999, lng: 9999999},
+      newMarker: null,
+      /*       newPos: {lat: 9999999, lng: 9999999},*/
       /*       newPos: {lat: 40.7206499, lng: -74.0032909},*/
     };
   }
@@ -23,13 +24,23 @@ export class LocoMap extends React.Component {
   getLocos() {
     return this.props.locos || [];
   }
-  
+
   // A point on the map is clicked
   onMapClicked(mapProps, map, e) {
-    /*     React.unmountComponentAtNode(this.refs.newPos);*/
-    this.setState({newPos: {lat: e.latLng.lat(), lng: e.latLng.lng()}});
-    this.forceUpdate();
-    console.log(e.latLng.lat(), e.latLng.lng());
+    //this.setState({newPos: {lat: e.latLng.lat(), lng: e.latLng.lng()}});
+
+    // Clear out existing marker
+    if (this.state.newMarker) {
+      this.state.newMarker.setMap(null);
+    }
+    
+    const latlng = new window.google.maps.LatLng(e.latLng.lat(), e.latLng.lng());
+    const marker = new window.google.maps.Marker({
+      map: map,
+      position: latlng,
+    });
+    this.setState({newMarker: marker});
+    /*     console.log(e.latLng.lat(), e.latLng.lng());*/
   }
 
   // Marker is clicked
@@ -40,13 +51,13 @@ export class LocoMap extends React.Component {
       showingInfoWindow: true
     });
   }
-
+  
   onInfoWindowClose() {
     this.setState({
       showingInfoWindow: false
     });
   }
-  
+
   render() {
     return (
       <div className="mapContainer">
@@ -74,14 +85,11 @@ export class LocoMap extends React.Component {
 	  </div>
 	</InfoWindow>
 
-	{/* User's new position */}
-	<Marker key={"newPos"} ref={'newPos'} position={this.state.newPos} name={"New Position"} />
-	
 	</Map>
       </div>
     );
   }
-  
+
 }
 
 // Set Google Map api
