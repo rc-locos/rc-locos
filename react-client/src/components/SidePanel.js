@@ -4,6 +4,7 @@ import {connect} from 'react-redux';
 
 import {List} from 'immutable';
 
+import './SidePanel.css';
 import * as actions from '../actions';
 
 
@@ -21,9 +22,12 @@ export class SidePanel extends React.Component {
   render() {
     return (
 	    <div className="sidePanel">
-	    
-	Sharing: {this.props.isSharing ? "true" : "false"}
-
+	    Sharing
+	    <label className="switch">
+	    <input type="checkbox" checked={this.props.isSharing} />
+	    <div className="slider"></div>
+	    </label>
+	
 	{this.getLocos().map(loco =>
 			     <div>
 			     <p>{loco.name}</p>
