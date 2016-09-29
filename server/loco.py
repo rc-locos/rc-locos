@@ -161,12 +161,16 @@ def update_loco(loco_id):
     location_data = request.json
     if not location_data:
         abort(400)
-    if 'lat' not in location_data or 'lng' not in location_data:
+    if 'coords' not in location_data and 'sharing' not in location_data:
         abort(400)
+    coords = location_data['coords']
     loco = RcLoco.query.filter_by(id=loco_id).first()
-    loco.coords = WKTElement('POINT({} {})'.format(location_data['lat'],
-                                                   location_data['lng']),
-                             srid=4326)
+    if 'lat' in coords and 'lng' in coords:
+        loco.coords = WKTElement('POINT({} {})'.format(
+            coords['lat'], coords['lng']),
+                                 srid=4326)
+    if 'sharing' in location_data:
+        loco.is_shared = bool(location_data['sharing'])
     db.session.add(loco)
     db.session.commit()
     return {"result": "success"}
