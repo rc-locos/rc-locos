@@ -34,22 +34,6 @@ export class LocoMap extends React.Component {
     // Create action to submit new location to global state
     this.props.submitCoords(e.latLng.lat(), e.latLng.lng());
 
-    // Show infowindow on the new marker
-    /*     console.log(mapProps);*/
-    /*     const markers = mapProps.children[0]._tail.array;*/
-    /*     console.log(markers);*/
-    /*     console.log(markers[markers.length - 1]);*/
-
-    /* this.setState({
-     *   showingInfoWindow: true
-     * });*/
-
-    /* var infowindow = new window.google.maps.InfoWindow({
-     *   content: <button type='button' onclick=''>Share</button>
-     * });
-     * infowindow.setPosition({lat: e.latLng.lat(), lng: e.latLng.lng()});
-     * infowindow.open(map);*/
-
     this.setState({
       showingInfoWindow2: true,
       infoWindow2Lat: e.latLng.lat(),
@@ -73,6 +57,10 @@ export class LocoMap extends React.Component {
     });
   }
 
+  onConfirmShare() {
+    console.log("hello i'm sharing");
+  }
+  
   render() {
     return (
       <div className="mapContainer">
@@ -103,7 +91,13 @@ export class LocoMap extends React.Component {
 	<InfoWindow2 visible={this.state.showingInfoWindow2}
 		     lat={this.state.infoWindow2Lat}
 		     lng={this.state.infoWindow2Lng}>
-	  <h1>Hello world</h1>
+	  <div>
+	    <p>Do you want to share your location with other Recursers?&nbsp;
+	      <button type="button" onClick={this.onConfirmShare.bind(this)}>
+		Share!
+	      </button>
+	    </p>
+	  </div>
       </InfoWindow2>
 	</Map>
       </div>
