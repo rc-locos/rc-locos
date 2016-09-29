@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Build client app
+npm run build
+
 
 STATIC_DIR='../server/static'
 

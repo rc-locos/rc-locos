@@ -33,6 +33,7 @@ export const requestLocos = () => {
 
 // Receive locos from server
 export const receiveLocos = (json) => {
+    console.log(json);
   return {
     type: 'RECEIVE_LOCOS',
     locos: json.data.children.map(child => child.data),
@@ -44,8 +45,8 @@ export const fetchLocos = () => {
   // Return a function that will handle the request and receive
   return (dispatch) => {
     dispatch(requestLocos());
-    return fetch('/locos')
+      return fetch('/locos', {'mode': 'no-cors'})
       .then(response => response.json())
-      .then(json => dispatch(receiveLocos(json)));
+	  .then(json => json.ok? dispatch(receiveLocos(json)):Promise.reject(json));
   }
 }
