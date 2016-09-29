@@ -95,7 +95,7 @@ export class LocoMap extends React.Component {
 		     lng={this.state.infoWindow2Lng}
 		     onClose={this.onInfoWindowClose2.bind(this)}>
 	  <div>
-	    <p>Do you want to share your location with other Recursers?&nbsp;
+	    <p>Share your location with other Recursers?&nbsp;
 	      <a href={"/share/"+this.state.infoWindow2Lat+"/"+this.state.infoWindow2Lng}>
 		Share!
 	      </a>

@@ -6,6 +6,7 @@ import os
 import json
 import sys
 
+
 SETTINGS_FILENAME = 'loco.json'
 if not os.path.exists(SETTINGS_FILENAME):
     print("Cannot find settings file `{}`".format(SETTINGS_FILENAME))
@@ -93,12 +94,7 @@ def check_authentication(method):
 @app.route('/share/<lat>/<lng>')
 @check_authentication
 def index(lat, lng):
-    user = session['user']
-    token = sessions[user]
-    # get user
-    u = get_user(token)
-    locos = RcLoco.query.all()
-    return render_template('index.html', user=u, locos=locos)
+    return render_template('index.html')
 
 
 @app.route('/token', methods=['GET', 'POST'])
@@ -137,6 +133,7 @@ def make_header(access_token):
     }
     return headers
 
+
 def serialize(method):
     @wraps(method)
     def serialized_response(*args, **kwargs):
@@ -152,8 +149,9 @@ def serialize(method):
 @serialize
 @check_authentication
 def get_locos():
-    locos = RcLoco.query.filter_by(is_shared=True).all()
+    locos = RcLoco.query.filter_by(is_shared=True).filter(RcLoco.coords!=None).all()
     return locos
+
 
 @app.route('/update', methods=['POST'])
 @serialize
@@ -205,6 +203,7 @@ def get_user(access_token):
         db.session.add(loco)
         db.session.commit()
     return u
+
 
 if __name__ == '__main__':
     app.debug = True
