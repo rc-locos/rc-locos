@@ -13,10 +13,10 @@ import './index.css';
 const store = createStore(reducer);
 
 // Hard-coded initial state
-import {Map} from 'immutable';
+import {Map, List} from 'immutable';
 const state0 =  Map({
   isSharing: false,
-  locos: [
+  locos: List([
     {
       id: 0,
       name: 'Recurse Center',
@@ -42,14 +42,14 @@ const state0 =  Map({
       lat: 40.7829,
       lng: -73.9654,
     }
-  ],
+  ]),
 });
 store.dispatch(setState(state0));
 
 
 ReactDOM.render(
   <Provider store={store}>
-  <App />
+    <App />
   </Provider>,
   document.getElementById('root')
 );

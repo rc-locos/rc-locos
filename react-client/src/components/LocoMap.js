@@ -3,6 +3,8 @@ import PureRenderMixin from 'react-addons-pure-render-mixin';
 import {connect} from 'react-redux';
 import {Map, Marker, InfoWindow, GoogleApiWrapper} from 'google-maps-react';
 
+import {List} from 'immutable';
+  
 import * as actions from '../actions';
 
 
@@ -22,11 +24,12 @@ export class LocoMap extends React.Component {
   }
 
   getLocos() {
-    return this.props.locos || [];
+    console.log(this.props.locos);
+    return this.props.locos || List([]);
   }
 
   // A point on the map is clicked
-  onMapClicked(mapProps, map, e) {
+  onMapClicked2(mapProps, map, e) {
     // Clear out existing marker
     if (this.state.newMarker) {
       this.state.newMarker.setMap(null);
@@ -48,6 +51,14 @@ export class LocoMap extends React.Component {
     infowindow.open(map, marker);
   }
 
+  onMapClicked(mapProps, map, e) {
+    // Clear out existing marker
+    if (this.state.newMarker)
+      this.state.newMarker.setMap(null);
+
+    this.props.submitCoords(e.latLng.lat(), e.latLng.lng());
+  }
+  
   // Marker is clicked
   onMarkerClick(props, marker, e) {
     this.setState({
@@ -70,7 +81,7 @@ export class LocoMap extends React.Component {
 	     onClick={this.onMapClicked.bind(this)}
 	     initialCenter={{lat: 40.720683, lng: -74.001001}}>
 	  {this.getLocos().map(loco =>
-	    <Marker key={loco.id}
+	    <Marker key={loco.id + '.' + Date.now()}
 		    loco={loco}
 		    name={loco.name}
 		    position={{lat: loco.lat, lng: loco.lng}}
