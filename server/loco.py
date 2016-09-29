@@ -26,6 +26,8 @@ app.config['SESSION_SECRET'] = app_settings['session_secret']
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.ext.declarative import declarative_base
 from geoalchemy2.types import Geometry
+from geoalchemy2.elements import WKTElement
+from geoalchemy2.shape import to_shape
 
 
 # TODO: Read database credentials from file, env variables etc.
@@ -38,6 +40,7 @@ class RcLoco(db.Model):
     __tablename__ = 'locos'
     id = db.Column(db.BigInteger, primary_key=True)
     name = db.Column(db.String(256))
+    image = db.Column(db.Text)
     address = db.Column(db.Text)
     coords = db.Column(Geometry(geometry_type='POINT', srid=4326))
     is_shared = db.Column(db.Boolean, default=False)
@@ -48,8 +51,20 @@ class ModelSerializer(json.JSONEncoder):
     OMITTED_KEYS = {'_sa_instance_state'}
 
     def default(self, o):
-        return {k: v for k, v in o.__dict__.items()
-                if k not in self.OMITTED_KEYS}
+        try:
+            d = {}
+            for k, v in o.__dict__.items():
+                if k not in self.OMITTED_KEYS:
+                    if k == "coords" and isinstance(v, WKTElement):
+                        lat, lng = list(to_shape(v).coords)[0]
+                        d['lat'] = lat
+                        d['lng'] = lng
+                    else:
+                        d[k] = v
+            return d
+        except AttributeError:
+            return {}
+
 
 # App
 
@@ -131,10 +146,10 @@ def serialize(method):
     return serialized_response
 
 
-@app.route('/users', methods=['GET'])
+@app.route('/locos', methods=['GET'])
 @serialize
 @check_authentication
-def get_users():
+def get_locos():
     locos = RcLoco.query.filter_by(is_shared=True).all()
     return locos
 
@@ -159,9 +174,11 @@ def get_user(access_token):
         abort(401)
     loco = RcLoco.query.get(int(u['id']))
     if not loco:
+        name = "{} {}".format(u['first_name'], u['last_name'])
         loco = RcLoco(
             id=u['id'],
-            name=u['pseudonym']
+            name=name,
+            image=u['image'],
         )
         db.session.add(loco)
         db.session.commit()
