@@ -26,7 +26,7 @@ app.config['SESSION_SECRET'] = app_settings['session_secret']
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.ext.declarative import declarative_base
 from geoalchemy2.types import Geometry
-from geoalchemy2.elements import WKTElement
+from geoalchemy2.elements import WKTElement, WKBElement
 from geoalchemy2.shape import to_shape
 
 
@@ -55,7 +55,8 @@ class ModelSerializer(json.JSONEncoder):
             d = {}
             for k, v in o.__dict__.items():
                 if k not in self.OMITTED_KEYS:
-                    if k == "coords" and isinstance(v, WKTElement):
+                    if k == "coords" and isinstance(v, WKTElement) \
+                       or isinstance(v, WKBElement):
                         lat, lng = list(to_shape(v).coords)[0]
                         d['lat'] = lat
                         d['lng'] = lng
@@ -153,6 +154,27 @@ def serialize(method):
 def get_locos():
     locos = RcLoco.query.filter_by(is_shared=True).all()
     return locos
+
+@app.route('/locos/<int:loco_id>', methods=['PUT'])
+@serialize
+@check_authentication
+def update_loco(loco_id):
+    location_data = request.json
+    if not location_data:
+        abort(400)
+    if 'coords' not in location_data and 'sharing' not in location_data:
+        abort(400)
+    coords = location_data['coords']
+    loco = RcLoco.query.filter_by(id=loco_id).first()
+    if 'lat' in coords and 'lng' in coords:
+        loco.coords = WKTElement('POINT({} {})'.format(
+            coords['lat'], coords['lng']),
+                                 srid=4326)
+    if 'sharing' in location_data:
+        loco.is_shared = bool(location_data['sharing'])
+    db.session.add(loco)
+    db.session.commit()
+    return {"result": "success"}
 
 # def get_batch(access_token, batch_id):
 #     headers = make_header(access_token)
