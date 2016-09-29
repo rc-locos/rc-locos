@@ -18,13 +18,17 @@ export class SidePanel extends React.Component {
     getLocos() {
 	return this.props.locos || List([]);
     }
+
+    onShareChange() {
+	this.props.updateSharing(!this.props.isSharing);
+    }
     
   render() {
     return (
 	    <div className="sidePanel">
 	    Sharing
 	    <label className="switch">
-	    <input type="checkbox" checked={this.props.isSharing} />
+	    <input type="checkbox" checked={this.props.isSharing} onChange={this.onShareChange.bind(this)} />
 	    <div className="slider"></div>
 	    </label>
 	

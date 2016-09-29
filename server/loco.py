@@ -157,6 +157,7 @@ def get_locos():
 @serialize
 @check_authentication
 def update_loco():
+    '''Update user location info'''
     location_data = request.get_json()
     if not location_data:
         abort(400)
@@ -173,12 +174,16 @@ def update_loco():
     db.session.commit()
     return {"result": "success"}
 
-@app.route('/update-share/<int:loco_id>/<int:is_shared>', methods=['PUT'])
+
+@app.route('/update-share', methods=['PUT'])
 @serialize
 @check_authentication
-def update_share(loco_id, is_shared):
+def update_share():
+    '''Update user sharing options'''
+    new_sharing = request.get_json()
+    loco_id = session['user']
     loco = RcLoco.query.filter_by(id=loco_id).first()
-    loco.is_shared = bool(is_shared)
+    loco.is_shared = new_sharing['isShared']
     db.session.add(loco)
     db.session.commit()
     return {"result": "success"}

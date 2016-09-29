@@ -112,27 +112,27 @@ export const updateLoco = (lat, lng) => {
 }
 
 
-// // Thunk to POST usering sharing options to server
-// export const updateSharing = (newIsShared) => {
-//     return (dispatch) => {
-// 	return fetch('/update-share', {
-// 	    credentials: 'include',
-// 	    method: 'post',
-// 	    headers: {
-// 		'Accept': 'application/json',
-// 		'Content-Type': 'application/json'
-// 	    },
-// 	    body: JSON.stringify({
-// 		isShared: newIsShared
-// 	    })
-// 	}).then(response => {
-// 	    if (response.status >= 400) {
-// 		throw new Error("Bad response from server");
-// 	    }
-// 	    dispatch(fetchLocos());
-// 	    dispatch(fetchSharing());
-// 	}).catch(err => {
-// 	    console.log(err);
-// 	});
-//     }
-// }
+// Thunk to POST usering sharing options to server
+export const updateSharing = (newIsShared) => {
+    return (dispatch) => {
+	return fetch('/update-share', {
+	    credentials: 'include',
+	    method: 'PUT',
+	    headers: {
+		'Accept': 'application/json',
+		'Content-Type': 'application/json'
+	    },
+	    body: JSON.stringify({
+		isShared: newIsShared
+	    })
+	}).then(response => {
+	    if (response.status >= 400) {
+		throw new Error("Bad response from server");
+	    }
+	    // Update user state
+	    dispatch(fetchLocos()).then(dispatch(fetchSharing()));
+	}).catch(err => {
+	    console.log(err);
+	});
+    }
+}
