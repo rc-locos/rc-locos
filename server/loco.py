@@ -26,7 +26,7 @@ app.config['SESSION_SECRET'] = app_settings['session_secret']
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.ext.declarative import declarative_base
 from geoalchemy2.types import Geometry
-from geoalchemy2.elements import WKTElement
+from geoalchemy2.elements import WKTElement, WKBElement
 from geoalchemy2.shape import to_shape
 
 
@@ -55,7 +55,8 @@ class ModelSerializer(json.JSONEncoder):
             d = {}
             for k, v in o.__dict__.items():
                 if k not in self.OMITTED_KEYS:
-                    if k == "coords" and isinstance(v, WKTElement):
+                    if k == "coords" and isinstance(v, WKTElement) \
+                       or isinstance(v, WKBElement):
                         lat, lng = list(to_shape(v).coords)[0]
                         d['lat'] = lat
                         d['lng'] = lng
