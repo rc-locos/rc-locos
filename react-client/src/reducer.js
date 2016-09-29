@@ -13,15 +13,14 @@ const submitAddr = (state, address) => {
 const submitCoords = (state, lat, lng) => {
   console.log("submitting coords: " + lat + "," + lng);
   const newLoco = {
-    id: 100,
+    id: 'newLoc',
     name: 'foo',
     lat: lat,
     lng: lng
   };
-  console.log('hello world');
-  console.log(state.updateIn(['locos'], arr => arr.push(newLoco)));
-  //console.log(state.set('locos', state.get('locos').push(newLoco)));
-  return state.update('locos', arr => arr.push(newLoco));
+  // If an element in locos already has id='newLoc', then replace that
+  const locos = state.get('locos').filter((loc) => loc.id !== 'newLoc');
+  return state.set('locos', locos.push(newLoco));
 }
 
 export default (state = Map(), action) => {

@@ -17,14 +17,10 @@ export class LocoMap extends React.Component {
       showingInfoWindow: false,
       activeMarker: {},
       selectedPlace: null,
-      newMarker: null,
-      /*       newPos: {lat: 9999999, lng: 9999999},*/
-      /*       newPos: {lat: 40.7206499, lng: -74.0032909},*/
     };
   }
 
   getLocos() {
-    console.log(this.props.locos);
     return this.props.locos || List([]);
   }
 
@@ -51,11 +47,9 @@ export class LocoMap extends React.Component {
     infowindow.open(map, marker);
   }
 
+  // User clicked on a region on the map
   onMapClicked(mapProps, map, e) {
-    // Clear out existing marker
-    if (this.state.newMarker)
-      this.state.newMarker.setMap(null);
-
+    // Create action to submit new location to global state
     this.props.submitCoords(e.latLng.lat(), e.latLng.lng());
   }
   
