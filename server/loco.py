@@ -158,7 +158,7 @@ def get_locos():
 @app.route('/update', methods=['POST'])
 @serialize
 @check_authentication
-def update_loco(loco_id):
+def update_loco():
     location_data = request.get_json()
     if not location_data:
         abort(400)

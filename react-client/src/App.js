@@ -1,17 +1,19 @@
 import React from 'react';
+import PureRenderMixin from 'react-addons-pure-render-mixin';
+import {connect} from 'react-redux';
 
 import './App.css';
 import {SidePanelContainer} from './components/SidePanel';
 import {LocoMapContainer} from './components/LocoMap';
 
-import {updateLoco} from './actions';
+import * as actions from './actions';
 
-
-class App extends React.Component {
+export class App extends React.Component {
 
   constructor(props) {
     super(props);
-
+    this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
+      
     if (this.props.params.share === 'share' &&
 	this.props.params.lat && this.props.params.lng) {
       // 	console.log(this.props.params.share);
@@ -19,7 +21,7 @@ class App extends React.Component {
 	// console.log(this.props.params.lng);
 
 	// Update location of user
-	updateLoco(this.props.params.lat, this.props.params.lng);
+	this.props.updateLoco(this.props.params.lat, this.props.params.lng);
     }
   }
   
@@ -33,4 +35,10 @@ class App extends React.Component {
   }
 }
 
-export default App;
+// Set up redux-connected component
+const mapStateToProps = (state) => {
+  return {
+      
+  };
+}
+export const AppContainer = connect(mapStateToProps, actions)(App);

@@ -62,9 +62,15 @@ export const fetchLocos = () => {
 export const updateLoco = (lat, lng) => {
     return (dispatch) => {
 	return fetch('/update', {
+	    credentials: 'include',
 	    method: 'post',
+	    headers: {
+		'Accept': 'application/json',
+		'Content-Type': 'application/json'
+	    },
 	    body: JSON.stringify({
-		text
+		lat,
+		lng
 	    })
 	}).then(response => {
 	    if (response.status >= 400) {

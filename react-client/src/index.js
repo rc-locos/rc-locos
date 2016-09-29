@@ -8,7 +8,7 @@ import { Provider } from 'react-redux'
 import { createStore, applyMiddleware } from 'redux'
 import { Router, Route, browserHistory } from 'react-router'
 
-import App from './App';
+import {AppContainer} from './App';
 import reducer from './reducer';
 import {fetchLocos, setState} from './actions';
 import './index.css';
@@ -61,7 +61,7 @@ store.dispatch(fetchLocos()).then(() => console.log(store.getState()));
 ReactDOM.render(
   <Provider store={store}>
     <Router history={browserHistory}>
-      <Route path="/(:share/:lat/:lng)" component={App} />
+      <Route path="/(:share/:lat/:lng)" component={AppContainer} />
     </Router>
   </Provider>,
   document.getElementById('root')
