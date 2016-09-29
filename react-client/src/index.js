@@ -4,6 +4,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux'
 import { createStore } from 'redux'
+import { Router, Route, browserHistory } from 'react-router';
 
 import App from './App';
 import reducer from './reducer';
@@ -49,7 +50,9 @@ store.dispatch(setState(state0));
 
 ReactDOM.render(
   <Provider store={store}>
-    <App />
+    <Router history={browserHistory}>
+      <Route path="/(:share/:lat/:lng)" component={App} />
+    </Router>
   </Provider>,
   document.getElementById('root')
 );

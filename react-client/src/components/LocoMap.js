@@ -57,8 +57,10 @@ export class LocoMap extends React.Component {
     });
   }
 
-  onConfirmShare() {
-    console.log("hello i'm sharing");
+  onInfoWindowClose2() {
+    this.setState({
+      showingInfoWindow2: false
+    });
   }
   
   render() {
@@ -90,12 +92,13 @@ export class LocoMap extends React.Component {
       
 	<InfoWindow2 visible={this.state.showingInfoWindow2}
 		     lat={this.state.infoWindow2Lat}
-		     lng={this.state.infoWindow2Lng}>
+		     lng={this.state.infoWindow2Lng}
+		     onClose={this.onInfoWindowClose2.bind(this)}>
 	  <div>
 	    <p>Do you want to share your location with other Recursers?&nbsp;
-	      <button type="button" onClick={this.onConfirmShare.bind(this)}>
+	      <a href={"/share/"+this.state.infoWindow2Lat+"/"+this.state.infoWindow2Lng}>
 		Share!
-	      </button>
+	      </a>
 	    </p>
 	  </div>
       </InfoWindow2>
