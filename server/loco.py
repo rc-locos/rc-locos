@@ -183,6 +183,15 @@ def update_share(loco_id, is_shared):
     db.session.commit()
     return {"result": "success"}
 
+
+@app.route('/is-shared', methods=['GET'])
+@serialize
+@check_authentication
+def is_shared():
+    loco_id = session['user']
+    u = RcLoco.query.filter_by(id=loco_id).first()
+    return {'isShared': u.is_shared}
+
 # def get_batch(access_token, batch_id):
 #     headers = make_header(access_token)
 #     req = requests.get("%s/batches/%d/people" % (app.config['RC_API_URI'], batch_id), headers=headers)

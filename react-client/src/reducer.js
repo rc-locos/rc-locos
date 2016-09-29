@@ -33,6 +33,11 @@ const receiveLocos = (state, locos) => {
     return state.set('locos', List(locos));
 }
 
+// Receive sharing settings for the user from server
+const receiveSharing = (state, sharing) => {
+    return state.set('isSharing', sharing);
+}
+
 export default (state = Map(), action) => {
   switch (action.type) {
     // case 'SET_STATE':
@@ -45,6 +50,8 @@ export default (state = Map(), action) => {
       return requestLocos(state);
     case 'RECEIVE_LOCOS':
       return receiveLocos(state, action.locos);
+  case 'RECEIVE_SHARING':
+      return receiveSharing(state, action.isShared);
     default:
       return state;
   }

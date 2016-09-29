@@ -10,7 +10,7 @@ import { Router, Route, browserHistory } from 'react-router'
 
 import {AppContainer} from './App';
 import reducer from './reducer';
-import {fetchLocos, setState} from './actions';
+import {fetchLocos, fetchSharing, setState} from './actions';
 import './index.css';
 
 
@@ -21,7 +21,8 @@ const store = createStore(
   )
 );
 
-store.dispatch(fetchLocos());
+// Fetch application state
+store.dispatch(fetchLocos()).then(store.dispatch(fetchSharing()));
 
 ReactDOM.render(
   <Provider store={store}>

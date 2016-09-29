@@ -39,6 +39,14 @@ export const receiveLocos = (json) => {
   }
 }
 
+// Receive user sharing settings from server
+export const receiveSharing = (isShared) => {
+    return {
+	type: 'RECEIVE_SHARING',
+	isShared,
+    }
+}
+
 // Thunk to get posts
 export const fetchLocos = () => {
   // Return a function that will handle the request and receive
@@ -54,11 +62,31 @@ export const fetchLocos = () => {
           .then(json => {
 	      dispatch(receiveLocos(json));
 	      //console.log(json);
+	  }).catch(err => {
+	    console.log(err);
 	  });
   }
 }
 
-// Thunk to post location information to server
+// Thunk to get user sharing setting
+export const fetchSharing = () => {
+    return (dispatch) => {
+	return fetch('/is-shared', {credentials: 'include'})
+	    .then(response => {
+		if (response.status >= 400) {
+		    throw new Error("Bad response from server");
+		}
+		return response.json();
+	    })
+	    .then(json => {
+		dispatch(receiveSharing(json.isShared));
+	    }).catch(err => {
+		console.log(err);
+	    });
+    }
+}
+
+// Thunk to POST location information to server
 export const updateLoco = (lat, lng) => {
     return (dispatch) => {
 	return fetch('/update', {
@@ -80,6 +108,31 @@ export const updateLoco = (lat, lng) => {
 	}).catch(err => {
 	    console.log(err);
 	});
-	return null; 
     }
 }
+
+
+// // Thunk to POST usering sharing options to server
+// export const updateSharing = (newIsShared) => {
+//     return (dispatch) => {
+// 	return fetch('/update-share', {
+// 	    credentials: 'include',
+// 	    method: 'post',
+// 	    headers: {
+// 		'Accept': 'application/json',
+// 		'Content-Type': 'application/json'
+// 	    },
+// 	    body: JSON.stringify({
+// 		isShared: newIsShared
+// 	    })
+// 	}).then(response => {
+// 	    if (response.status >= 400) {
+// 		throw new Error("Bad response from server");
+// 	    }
+// 	    dispatch(fetchLocos());
+// 	    dispatch(fetchSharing());
+// 	}).catch(err => {
+// 	    console.log(err);
+// 	});
+//     }
+// }
