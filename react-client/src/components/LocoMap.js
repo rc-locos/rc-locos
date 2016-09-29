@@ -25,7 +25,7 @@ export class LocoMap extends React.Component {
     };
   }
 
-  getLocos() {
+    getLocos() {
     return this.props.locos || List([]);
   }
 

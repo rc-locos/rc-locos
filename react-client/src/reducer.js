@@ -1,4 +1,4 @@
-import {Map} from 'immutable';
+import {Map, List} from 'immutable';
 
 
 const setState = (state, newState) => {
@@ -30,7 +30,7 @@ const requestLocos = (state) => {
 
 // Receive locos from server
 const receiveLocos = (state, locos) => {
-  return state.set('locos', locos);
+    return state.set('locos', List(locos));
 }
 
 export default (state = Map(), action) => {
