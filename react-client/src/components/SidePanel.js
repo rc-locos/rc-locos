@@ -2,6 +2,8 @@ import React from 'react';
 import PureRenderMixin from 'react-addons-pure-render-mixin';
 import {connect} from 'react-redux';
 
+import {List} from 'immutable';
+
 import * as actions from '../actions';
 
 
@@ -10,29 +12,27 @@ export class SidePanel extends React.Component {
   constructor(props) {
     super(props);
     this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
-    this.state = {addr: ''};
   }
 
-  handleAddrChange(e) {
-    this.setState({addr: e.target.value});
-  }
-
-  handleSubmit() {
-    this.props.submitAddr(this.state.addr);
-  }
-
-  /* addBatteryPark() {
-   *   
-   * }*/
-  
+    getLocos() {
+	return this.props.locos || List([]);
+    }
+    
   render() {
     return (
-      <div className="sidePanel">
-	<input type="text" onChange={this.handleAddrChange.bind(this)} />
-	<button type="button" onClick={this.handleSubmit.bind(this)} >Submit</button>
-	<br />
+	    <div className="sidePanel">
+	    
 	Sharing: {this.props.isSharing ? "true" : "false"}
-      </div>
+
+	{this.getLocos().map(loco =>
+			     <div>
+			     <p>{loco.name}</p>
+			     <img src={loco.image} />
+			     </div>
+			    )}
+
+	
+	</div>
     );
   }
   
@@ -42,7 +42,8 @@ export class SidePanel extends React.Component {
 // Set up redux-connected component
 const mapStateToProps = (state) => {
   return {
-    isSharing: state.get('isSharing')
+      isSharing: state.get('isSharing'),
+      locos: state.get('locos')
   };
 }
 export const SidePanelContainer = connect(mapStateToProps, actions)(SidePanel);
