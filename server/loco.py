@@ -153,6 +153,23 @@ def get_locos():
     locos = RcLoco.query.filter_by(is_shared=True).all()
     return locos
 
+@app.route('/locos/<int:loco_id>', methods=['PUT'])
+@serialize
+@check_authentication
+def update_loco(loco_id):
+    location_data = request.json
+    if not location_data:
+        abort(400)
+    if 'lat' not in location_data or 'lng' not in location_data:
+        abort(400)
+    loco = RcLoco.query.filter_by(id=loco_id).first()
+    loco.coords = WKTElement('POINT({} {})'.format(location_data['lat'],
+                                                   location_data['lng']),
+                             srid=4326)
+    db.session.add(loco)
+    db.session.commit()
+    return {"result": "success"}
+
 # def get_batch(access_token, batch_id):
 #     headers = make_header(access_token)
 #     req = requests.get("%s/batches/%d/people" % (app.config['RC_API_URI'], batch_id), headers=headers)
