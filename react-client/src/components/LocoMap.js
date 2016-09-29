@@ -32,7 +32,7 @@ export class LocoMap extends React.Component {
   // User clicked on a region on the map
   onMapClicked(mapProps, map, e) {
     // Create action to submit new location to global state
-    this.props.submitCoords(e.latLng.lat(), e.latLng.lng());
+    //this.props.submitCoords(e.latLng.lat(), e.latLng.lng());
 
     this.setState({
       showingInfoWindow2: true,
