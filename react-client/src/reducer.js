@@ -6,12 +6,12 @@ const setState = (state, newState) => {
 }
 
 const submitAddr = (state, address) => {
-  console.log("submitting address: " + address);
+  /*   console.log("submitting address: " + address);*/
   return state;
 }
 
 const submitCoords = (state, lat, lng) => {
-  console.log("submitting coords: " + lat + "," + lng);
+  /*   console.log("submitting coords: " + lat + "," + lng);*/
   const newLoco = {
     id: 'newLoc',
     name: 'foo',
@@ -23,6 +23,16 @@ const submitCoords = (state, lat, lng) => {
   return state.set('locos', locos.push(newLoco));
 }
 
+// Request locos
+const requestLocos = (state) => {
+  return state;
+}
+
+// Receive locos from server
+const receiveLocos = (state, locos) => {
+  return state.set('locos', locos);
+}
+
 export default (state = Map(), action) => {
   switch (action.type) {
     case 'SET_STATE':
@@ -31,6 +41,10 @@ export default (state = Map(), action) => {
       return submitAddr(state, action.addr);
     case 'SUBMIT_COORD':
       return submitCoords(state, action.lat, action.lng);
+    case 'REQUEST_LOCOS':
+      return requestLocos(state);
+    case 'RECEIVE_LOCOS':
+      return receiveLocos(state, action.locos);
     default:
       return state;
   }

@@ -1,17 +1,25 @@
 import 'babel-polyfill'
 
-import React from 'react';
-import ReactDOM from 'react-dom';
+import thunkMiddleware from 'redux-thunk'
+
+import React from 'react'
+import ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
-import { createStore } from 'redux'
-import { Router, Route, browserHistory } from 'react-router';
+import { createStore, applyMiddleware } from 'redux'
+import { Router, Route, browserHistory } from 'react-router'
 
 import App from './App';
 import reducer from './reducer';
 import {setState} from './actions';
 import './index.css';
 
-const store = createStore(reducer);
+
+const store = createStore(
+  reducer,
+  applyMiddleware(
+    thunkMiddleware, // lets us dispatch() functions
+  )
+);
 
 // Hard-coded initial state
 import {Map, List} from 'immutable';
@@ -46,6 +54,10 @@ const state0 =  Map({
   ]),
 });
 store.dispatch(setState(state0));
+
+/* store.dispatch(fetchLocos()).then(() =>
+ *   console.log(store.getState())
+ * );*/
 
 
 ReactDOM.render(
