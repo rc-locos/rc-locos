@@ -10,7 +10,7 @@ import { Router, Route, browserHistory } from 'react-router'
 
 import App from './App';
 import reducer from './reducer';
-import {fetchLocos} from './actions';
+import {fetchLocos, setState} from './actions';
 import './index.css';
 
 
@@ -21,8 +21,8 @@ const store = createStore(
   )
 );
 
-// Hard-coded initial state
-import {Map, List} from 'immutable';
+// // Hard-coded initial state
+// import {Map, List} from 'immutable';
 // const state0 =  Map({
 //   isSharing: false,
 //   locos: List([
@@ -53,7 +53,8 @@ import {Map, List} from 'immutable';
 //     }
 //   ]),
 // });
-//store.dispatch(setState(state0));
+// store.dispatch(setState(state0));
+// console.log(store.getState());
 
 store.dispatch(fetchLocos()).then(() => console.log(store.getState()));
 

@@ -33,10 +33,9 @@ export const requestLocos = () => {
 
 // Receive locos from server
 export const receiveLocos = (json) => {
-    console.log(json);
   return {
     type: 'RECEIVE_LOCOS',
-    locos: json.data.children.map(child => child.data),
+    locos: json,
   }
 }
 
@@ -45,8 +44,16 @@ export const fetchLocos = () => {
   // Return a function that will handle the request and receive
   return (dispatch) => {
     dispatch(requestLocos());
-      return fetch('/locos', {'mode': 'no-cors'})
-      .then(response => response.json())
-	  .then(json => json.ok? dispatch(receiveLocos(json)):Promise.reject(json));
+      return fetch('/locos', {credentials: 'include'})
+	  .then(response => {
+	      if (response.status >= 400) {
+		  throw new Error("Bad response from server");
+	      }
+	      return response.json();
+	  })
+          .then(json => {
+	      dispatch(receiveLocos(json));
+	      //console.log(json);
+	  });
   }
 }
