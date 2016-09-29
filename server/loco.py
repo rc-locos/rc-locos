@@ -120,10 +120,10 @@ def access_token():
         user = get_user(token)
 
         # save user session
-        user_email = user['email']
+        user_id = user['id']
 
-        session['user'] = user_email
-        sessions[user_email] = token
+        session['user'] = user_id
+        sessions[user_id] = token
 
         return redirect(url_for('index'))
     else:
@@ -155,23 +155,22 @@ def get_locos():
     locos = RcLoco.query.filter_by(is_shared=True).all()
     return locos
 
-@app.route('/locos/<int:loco_id>', methods=['PUT'])
+@app.route('/update', methods=['POST'])
 @serialize
 @check_authentication
 def update_loco(loco_id):
-    location_data = request.json
+    location_data = request.get_json()
     if not location_data:
         abort(400)
-    if 'coords' not in location_data and 'sharing' not in location_data:
+    if 'lat' not in location_data and 'lng' not in location_data:
         abort(400)
-    coords = location_data['coords']
+    lat = location_data['lat']
+    lng = location_data['lng']
+    loco_id = session['user']
     loco = RcLoco.query.filter_by(id=loco_id).first()
-    if 'lat' in coords and 'lng' in coords:
-        loco.coords = WKTElement('POINT({} {})'.format(
-            coords['lat'], coords['lng']),
-                                 srid=4326)
-    if 'sharing' in location_data:
-        loco.is_shared = bool(location_data['sharing'])
+    loco.coords = WKTElement('POINT({} {})'.format(lat, lng),
+                             srid=4326)
+    loco.is_shared = True
     db.session.add(loco)
     db.session.commit()
     return {"result": "success"}

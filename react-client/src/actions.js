@@ -57,3 +57,23 @@ export const fetchLocos = () => {
 	  });
   }
 }
+
+// Thunk to post location information to server
+export const updateLoco = (lat, lng) => {
+    return (dispatch) => {
+	return fetch('/update', {
+	    method: 'post',
+	    body: JSON.stringify({
+		text
+	    })
+	}).then(response => {
+	    if (response.status >= 400) {
+		throw new Error("Bad response from server");
+	    }
+	    dispatch(fetchLocos());
+	}).catch(err => {
+	    console.log(err);
+	});
+	return null; 
+    }
+}

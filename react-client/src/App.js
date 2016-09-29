@@ -4,6 +4,8 @@ import './App.css';
 import {SidePanelContainer} from './components/SidePanel';
 import {LocoMapContainer} from './components/LocoMap';
 
+import {updateLoco} from './actions';
+
 
 class App extends React.Component {
 
@@ -12,9 +14,12 @@ class App extends React.Component {
 
     if (this.props.params.share === 'share' &&
 	this.props.params.lat && this.props.params.lng) {
-      console.log(this.props.params.share);
-      console.log(this.props.params.lat);
-      console.log(this.props.params.lng);
+      // 	console.log(this.props.params.share);
+      // console.log(this.props.params.lat);
+	// console.log(this.props.params.lng);
+
+	// Update location of user
+	updateLoco(this.props.params.lat, this.props.params.lng);
     }
   }
   
