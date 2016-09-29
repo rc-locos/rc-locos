@@ -88,9 +88,10 @@ def check_authentication(method):
             return method(*args, **kwargs)
     return auth_checked
 
-@app.route('/', methods=['GET'])
+@app.route('/', defaults={'lat':None, 'lng':None})
+@app.route('/share/<lat>/<lng>')
 @check_authentication
-def index():
+def index(lat, lng):
     user = session['user']
     token = sessions[user]
     # get user
