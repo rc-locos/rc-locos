@@ -26,16 +26,25 @@ export class SidePanel extends React.Component {
   render() {
     return (
 	    <div className="sidePanel">
-	    Sharing
+	    <div className='sharingText'>Sharing</div>
+	    <div className='switchContainer'>
+	    <span className='switchLabel'>
+	    Off
+	    </span>
+	    <span>
 	    <label className="switch">
 	    <input type="checkbox" checked={this.props.isSharing} onChange={this.onShareChange.bind(this)} />
 	    <div className="slider"></div>
 	    </label>
-	
+	    </span>
+	    <span className='switchLabel'>
+	    On
+	</span>
+	    </div>
 	{this.getLocos().map(loco =>
-			     <div>
-			     <p>{loco.name}</p>
+			     <div className='userbox'>
 			     <img src={loco.image} />
+			     <p>{loco.name}</p>
 			     </div>
 			    )}
 

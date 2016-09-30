@@ -53,3 +53,52 @@ input:checked + .slider:before {
 .slider.round:before {
     border-radius: 50%;
 }
+
+
+.userbox {
+    overflow: hidden;
+    clear: both;
+    display: block;
+    width: 280px;
+    border-top: 1px solid #ccc;
+}
+
+.userbox img {
+    height: 60px;
+    float: left;
+}
+
+.userbox p {
+    display: block;
+    float: left;
+    font-size: .9em;
+    margin-left: 16px;
+    margin-top: 22px;
+}
+
+.sharingText {
+    font-size: 1.2em;
+    display: block;
+    width: 120px;
+    text-align: center;
+    float: left;
+    height: 20px;
+    vertical-align: bottom;
+    margin-top: 6px;
+}
+
+.switchContainer {
+    display: block;
+}
+
+.switchContainer span{
+    display: block;
+    float: left;
+    vertical-align: middle;
+}
+
+.switchLabel {
+    margin-top: 9px;
+    margin-right: 4px;
+    margin-left: 4px;
+}
