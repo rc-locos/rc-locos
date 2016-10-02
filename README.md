@@ -6,7 +6,7 @@ Find locos of other locos.
 
 # Running production server
 
-gunicorn -w 4 -b 0.0.0.0:5000 -p ./loco.pid -D loco:app
+gunicorn -w 1 -b 0.0.0.0:5000 -p ./loco.pid -D loco:app
 
 # Getting Started
 
