@@ -21,7 +21,7 @@ app.config['RC_OAUTH_CLIENT_ID'] = app_settings['client_id']
 app.config['RC_OAUTH_CLIENT_SECRET'] = app_settings['client_secret']
 app.config['RC_OAUTH_CLIENT_REDIRECT_URI'] = app_settings['redirect_uri']
 app.config['SESSION_SECRET'] = app_settings['session_secret']
-
+app.secret_key = app.config['SESSION_SECRET']
 
 # DB Stuff
 from flask_sqlalchemy import SQLAlchemy

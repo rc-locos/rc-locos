@@ -4,4 +4,10 @@ Find locos of other locos.
 
 [url](http://rc-locos.recurse.com)
 
-gunicorn -w 4 -b 127.0.0.1:5000 -p ./loco.pid -D loco:app
+# Running production server
+
+gunicorn -w 4 -b 0.0.0.0:5000 -p ./loco.pid -D loco:app
+
+# Getting Started
+
+copy server/loco.json.example to server/loco.json and fill in the values
