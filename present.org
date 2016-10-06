@@ -18,7 +18,7 @@ RC-Locos!
 
 * Server
 
-- Flask - login w RC OAuth
+- Flask + RC OAuth
 - NGINX + Gunicorn
 - PostgreSQL + PostGIS
 
