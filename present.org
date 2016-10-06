@@ -1,0 +1,41 @@
+* Problem
+
+- Subway ride home from RC at midnight is scary/lonely
+- Very difficult to stalk other RC-ers w/o knowing where they live
+
+
+* Solution
+
+RC-Locos!
+
+
+* Client
+
+- React
+- Redux
+- ImmutableJS
+
+
+* Server
+
+- Flask - login w RC OAuth
+- NGINX + Gunicorn
+- PostgreSQL + PostGIS
+
+
+* Future Work
+
+** Features
+- Filter
+- Search
+- Design improvements
+
+** Contributions
+- Pair
+- Pull requests
+
+
+* Links
+
+- App: http://rc-locos.recurse.com
+- Github: https://github.com/rc-locos/rc-locos
