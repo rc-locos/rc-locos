@@ -22,6 +22,7 @@ export class LocoMap extends React.Component {
             showingInfoWindow2: false,
             infoWindow2Lat: 100000000,
             infoWindow2Lng: 100000000,
+            mapCenter: this.getInitialCenter()
         };
     }
 
@@ -73,6 +74,7 @@ export class LocoMap extends React.Component {
             });
         }
         return {
+            // Recurse center location by default
             lat: 40.720683,
             lng: -74.001001
         };
@@ -83,7 +85,7 @@ export class LocoMap extends React.Component {
             <div className="mapContainer">
 	              <Map google={window.google}
 	                   onClick={this.onMapClicked.bind(this)}
-	                   initialCenter={this.getInitialCenter()}>
+	                   center={this.state.mapCenter}>
                     {this.getLocos().map(loco =>
 	                      <Marker key={loco.id + '.' + Date.now()}
                                 loco={loco}
